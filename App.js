@@ -12,7 +12,8 @@ import {
   Platform,
 } from 'react-native';
 
-import { processQuotation } from './src/index.js';
+import { processQuotation } from './src/orchestrator.js';
+import { updateLineItemsTotals, calculateGrandTotal } from './src/logic.js';
 import { company as defaultCompany, customer as defaultCustomer, lineItems as defaultLineItems } from './src/dataStructures.js';
 
 import FormField from './src/components/FormField.js';
@@ -30,26 +31,21 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Update totals whenever line items change using processQuotation (Mode A)
-  useEffect(() => {
-    const updateTotals = async () => {
-      try {
-        const updatedQuotation = await processQuotation(quotation, 'A');
-        // Only update if totals have actually changed to avoid infinite loops
-        if (updatedQuotation.grandTotal !== quotation.grandTotal) {
-          setQuotation(updatedQuotation);
-        }
-      } catch (e) {
-        console.error("Failed to update totals", e);
-      }
-    };
-    updateTotals();
-  }, [JSON.stringify(quotation.lineItems)]);
+  // Synchronously update line items and grand total
+  const syncQuotation = (newQuotation) => {
+    const updatedLineItems = updateLineItemsTotals(newQuotation.lineItems);
+    const total = calculateGrandTotal(updatedLineItems);
+    setQuotation({
+      ...newQuotation,
+      lineItems: updatedLineItems,
+      grandTotal: total,
+    });
+  };
 
   const handleUpdateItem = (index, updatedItem) => {
     const newItems = [...quotation.lineItems];
     newItems[index] = updatedItem;
-    setQuotation({ ...quotation, lineItems: newItems });
+    syncQuotation({ ...quotation, lineItems: newItems });
   };
 
   const handleAddItem = () => {
@@ -61,12 +57,12 @@ export default function App() {
       description: '',
       total: '0.00',
     };
-    setQuotation({ ...quotation, lineItems: [...quotation.lineItems, newItem] });
+    syncQuotation({ ...quotation, lineItems: [...quotation.lineItems, newItem] });
   };
 
   const handleRemoveItem = (index) => {
     const newItems = quotation.lineItems.filter((_, i) => i !== index);
-    setQuotation({ ...quotation, lineItems: newItems });
+    syncQuotation({ ...quotation, lineItems: newItems });
   };
 
   const handleGeneratePDF = async () => {
@@ -74,10 +70,17 @@ export default function App() {
     try {
       // Use Mode B for API PDF generation (it includes validation)
       const blob = await processQuotation(quotation, 'B');
-      Alert.alert('Success', 'Quotation PDF generated successfully!');
-      console.log('PDF Blob received', blob);
-      // In a real app:
-      // await sharePDF(blob);
+      Alert.alert(
+        'Success',
+        'Quotation PDF generated successfully! In a production environment, you would now use a library like react-native-share to view or send the file.'
+      );
+      console.log('PDF Blob received:', blob);
+
+      // PRODUCTION TIP:
+      // To save or share this PDF on mobile:
+      // 1. Install react-native-blob-util and react-native-share
+      // 2. Convert blob to base64
+      // 3. Use Share.open({ url: `data:application/pdf;base64,${base64Data}` })
     } catch (error) {
       Alert.alert('Error', error.message);
     } finally {
