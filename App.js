@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 import { processQuotation } from './src/orchestrator.js';
 import { updateLineItemsTotals, calculateGrandTotal } from './src/logic.js';
@@ -90,6 +91,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="auto" />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.flex1}

@@ -1,84 +1,54 @@
-# Quotly Master Pro - React Native Edition
+# Quotly Master Pro - React Native Edition (Expo Version)
 
-Quotly is a mobile application built with React Native for generating professional quotation PDFs using the [pdfgen.app](https://pdfgen.app) API.
+Quotly is a mobile application for generating professional quotation PDFs using the [pdfgen.app](https://pdfgen.app) API.
 
-## Features
+## Why Expo?
 
-- **Dynamic Line Items**: Add, edit, and remove line items with automatic total calculations.
-- **Company & Customer Info**: Manage contact details and logos.
-- **PDF Generation**: Direct integration with pdfgen.app API.
-- **Validation**: Built-in validation for dates, URLs, and required fields.
-- **Offline Ready**: Modular logic designed to work offline.
+If you encountered an error saying **"Android project not found"**, it's because a standard React Native project requires a native `android` folder which is complex to set up manually.
+
+We have switched this project to **Expo**. Expo allows you to run the app on your phone without needing native Android or iOS folders, making it much easier to start on your laptop.
 
 ## Prerequisites
 
-Before running the app, ensure you have the following installed on your laptop:
-
-- **Node.js** (v18 or newer recommended)
-- **npm** or **yarn**
-- **React Native Development Environment**:
-  - For iOS: macOS with Xcode installed.
-  - For Android: Android Studio and Android SDK.
-  - Alternatively, you can use **Expo Go** for quicker testing.
+- **Node.js** (v18 or newer)
+- **Expo Go App** (Download it on your iPhone or Android phone from the App Store/Play Store)
 
 ## Getting Started
 
-### 1. Clone and Install Dependencies
+### 1. Install Dependencies
 
+On your laptop, run:
 ```bash
-# Navigate to the project directory
 npm install
 ```
 
-### 2. Run the App
+### 2. Start the Project
 
-#### Using React Native CLI
+Run:
 ```bash
-# Start the Metro bundler
 npm start
-
-# In a new terminal, run on Android
-npm run android
-
-# Or run on iOS
-npm run ios
 ```
+This will start the Expo development server and display a **QR Code** in your terminal.
 
-#### Using Expo (Recommended for quick start)
-If you prefer Expo, you can initialize an Expo project and copy the `src` and `App.js` files into it.
+### 3. Run on your Phone
 
-### 3. Running Tests
+1. Open the **Expo Go** app on your phone.
+2. Scan the QR code shown in your laptop's terminal.
+3. The app will load and you can start generating quotations!
 
-The project includes unit tests for business logic and validation.
+## Running Tests
 
+You can still run the business logic tests on your laptop:
 ```bash
 npm test
 ```
 
-## Project Structure
+## Features
 
-- `App.js`: Main UI component and state management.
-- `src/orchestrator.js`: Main entry point for business logic orchestration.
-- `src/logic.js`: Calculation logic for totals and line items.
-- `src/api.js`: API service for PDF generation.
-- `src/validation.js`: Data validation rules.
-- `src/dataStructures.js`: Initial state and data schemas.
-- `src/components/`: Reusable UI components (`FormField`, `LineItemRow`).
+- **Dynamic Line Items**: Real-time total calculations.
+- **Validation**: Ensures dates, URLs, and required fields are correct.
+- **PDF Generation**: Sends data to pdfgen.app and receives the PDF.
 
-## API Configuration
+## Troubleshooting
 
-The app is pre-configured with the following credentials:
-- **Template ID**: `fa5790d`
-- **API Key**: `lCi76rUCD3onQBnGIifE7`
-
-These are located in `src/api.js`.
-
-## Extensibility
-
-The project is designed to be easily extended with:
-- Tax support
-- Discounts
-- Currency selection
-- Multiple PDF templates
-
-Check `src/orchestrator.js` for extensibility placeholders.
+If you still want to run the app using `npm run android` with the native CLI, you would need to run `npx expo prebuild` first to generate the `android` folder, but we recommend sticking with **Expo Go** for the simplest experience.
