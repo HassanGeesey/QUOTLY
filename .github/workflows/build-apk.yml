@@ -35,7 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Prebuild (Generate Native Android Code)
-        run: npx expo prebuild --platform android --no-interactive
+        run: npx expo prebuild --platform android
 
       - name: Build APK with Gradle
         working-directory: android
