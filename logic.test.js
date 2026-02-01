@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert';
-import { calculateLineTotal, updateLineItemsTotals, calculateGrandTotal } from './logic.js';
+import { calculateLineTotal, updateLineItemsTotals, calculateGrandTotal } from './src/logic.js';
 
 test('calculateLineTotal calculates correctly', () => {
   const item = { qty: 2, unitPrice: 10.5 };

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert';
-import { isValidURL, isValidDate, validateQuotation } from './validation.js';
+import { isValidURL, isValidDate, validateQuotation } from './src/validation.js';
 
 test('isValidURL validates correctly', () => {
   assert.strictEqual(isValidURL('https://example.com/logo.png'), true);
