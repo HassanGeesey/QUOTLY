@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.hassangeesey.quotly",
       "backgroundColor": "#ffffff"
     },
     "web": {
